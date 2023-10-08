@@ -1,10 +1,30 @@
-export const Keys = () => {
+import { KeyButton } from "@/components/library/KeyButton/index";
+
+export const Keys = ({ handleCharBtnClick }) => {
   return (
     <div>
-      <button>O</button>
-      <button>G</button>
-      <button>D</button>
-      <button>&lt;</button>
+      <KeyButton
+        onClick={() => {
+          handleCharBtnClick("O");
+        }}
+      >
+        O
+      </KeyButton>
+      <KeyButton
+        onClick={() => {
+          handleCharBtnClick("G");
+        }}
+      >
+        G
+      </KeyButton>
+      <KeyButton
+        onClick={() => {
+          handleCharBtnClick("D");
+        }}
+      >
+        D
+      </KeyButton>
+      <KeyButton>&lt;</KeyButton>
     </div>
   );
 };

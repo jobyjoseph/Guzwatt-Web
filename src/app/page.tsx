@@ -1,6 +1,24 @@
+"use client";
 import { QuestionBlock } from "@/components/QuestionBlock/index";
-import styles from "./page.module.css";
+import { ScoreBoard } from "@/components/ScoreBoard/index";
+import { useEffect, useState } from "react";
+import { words } from "@/data/words";
 
 export default function Home() {
-  return <QuestionBlock />;
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
+  const [isChallengeFinished, setIsChallengeFinished] = useState(false);
+  useEffect(() => {
+    if (currentQuestionNumber > 5) {
+      setIsChallengeFinished(true);
+    }
+  }, [currentQuestionNumber]);
+  return isChallengeFinished ? (
+    <ScoreBoard />
+  ) : (
+    <QuestionBlock
+      currentQuestionNumber={currentQuestionNumber}
+      setCurrentQuestionNumber={setCurrentQuestionNumber}
+      questionData={words?.[currentQuestionNumber - 1]}
+    />
+  );
 }
