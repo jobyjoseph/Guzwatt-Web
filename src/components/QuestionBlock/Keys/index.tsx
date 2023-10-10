@@ -1,6 +1,10 @@
 import { KeyButton } from "@/components/library/KeyButton/index";
 
-export const Keys = ({ handleCharBtnClick }) => {
+type KeysProps = {
+  handleCharBtnClick: any;
+};
+
+export const Keys = ({ handleCharBtnClick }: KeysProps) => {
   return (
     <div>
       <KeyButton

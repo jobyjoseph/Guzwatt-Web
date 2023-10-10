@@ -1,6 +1,12 @@
 import styles from "./styles.module.scss";
+import { ReactNode } from "react";
 
-export const KeyButton = ({ children, onClick }) => {
+type KeyButtonProps = {
+  children: ReactNode;
+  onClick?: any;
+};
+
+export const KeyButton = ({ children, onClick }: KeyButtonProps) => {
   return (
     <button className={styles.keybutton} onClick={onClick}>
       {children}

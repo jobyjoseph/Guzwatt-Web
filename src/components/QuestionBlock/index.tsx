@@ -4,16 +4,22 @@ import { Keys } from "./Keys/index";
 import { Question } from "./Question/index";
 import { SubmitButton } from "./Submit/index";
 
+type QuestionBlockProps = {
+  currentQuestionNumber: number;
+  setCurrentQuestionNumber: any;
+  questionData: any;
+};
+
 export const QuestionBlock = ({
   currentQuestionNumber,
   setCurrentQuestionNumber,
   questionData,
-}) => {
+}: QuestionBlockProps) => {
   const handleSubmitButtonClick = () => {
     setCurrentQuestionNumber(currentQuestionNumber + 1);
   };
 
-  const handleCharBtnClick = (charValue) => {
+  const handleCharBtnClick = (charValue: string) => {
     const answerInputCopy = [...answerInput];
     for (let i = 0; i < answerInputCopy?.length; i++) {
       if (answerInputCopy?.[i] === "-") {

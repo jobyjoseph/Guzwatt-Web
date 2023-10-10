@@ -1,6 +1,10 @@
 import styles from "./styles.module.scss";
 
-export const Blanks = ({ answerInput }) => {
+type BlanksProps = {
+  answerInput: Array<string>;
+};
+
+export const Blanks = ({ answerInput }: BlanksProps) => {
   return (
     <div className={styles.container}>
       {answerInput.map((item, index) => (
