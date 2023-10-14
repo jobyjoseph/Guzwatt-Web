@@ -2,9 +2,13 @@ import { KeyButton } from "@/components/library/KeyButton/index";
 
 type KeysProps = {
   handleCharBtnClick: any;
+  handleBackSpaceBtnClick: any;
 };
 
-export const Keys = ({ handleCharBtnClick }: KeysProps) => {
+export const Keys = ({
+  handleCharBtnClick,
+  handleBackSpaceBtnClick,
+}: KeysProps) => {
   return (
     <div>
       <KeyButton
@@ -28,7 +32,13 @@ export const Keys = ({ handleCharBtnClick }: KeysProps) => {
       >
         D
       </KeyButton>
-      <KeyButton>&lt;</KeyButton>
+      <KeyButton
+        onClick={() => {
+          handleBackSpaceBtnClick();
+        }}
+      >
+        &lt;
+      </KeyButton>
     </div>
   );
 };

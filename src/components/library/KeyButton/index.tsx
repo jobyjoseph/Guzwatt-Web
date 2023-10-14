@@ -1,5 +1,5 @@
 import styles from "./styles.module.scss";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 type KeyButtonProps = {
   children: ReactNode;
@@ -7,8 +7,16 @@ type KeyButtonProps = {
 };
 
 export const KeyButton = ({ children, onClick }: KeyButtonProps) => {
+  const [disabled, setDisabled] = useState(false);
   return (
-    <button className={styles.keybutton} onClick={onClick}>
+    <button
+      className={styles.keybutton}
+      onClick={() => {
+        setDisabled(true);
+        onClick();
+      }}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

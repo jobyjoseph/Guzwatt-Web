@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Blanks } from "./Blanks/index";
 import { Keys } from "./Keys/index";
 import { Question } from "./Question/index";
@@ -30,10 +30,37 @@ export const QuestionBlock = ({
     setAnswerInput(answerInputCopy);
   };
 
+  const handleBackSpaceBtnClick = (charValue: string) => {
+    const answerInputCopy = [...answerInput];
+    for (let i = answerInputCopy?.length - 1; i >= 0; i--) {
+      if (answerInputCopy?.[i] !== "-") {
+        answerInputCopy[i] = "-";
+        break;
+      }
+    }
+    setAnswerInput(answerInputCopy);
+  };
+
   const answerLength = questionData?.answer?.length;
   const [answerInput, setAnswerInput] = useState(
     new Array(answerLength).fill("-")
   );
+
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+  useEffect(() => {
+    setIsSubmitEnabled(false);
+    let fillCount = 0;
+    for (let i = 0; i < answerInput?.length; i++) {
+      if (answerInput?.[i] !== "-") {
+        fillCount++;
+      }
+    }
+    if (fillCount === answerInput?.length) {
+      setIsSubmitEnabled(true);
+    }
+  }, [answerInput]);
+
   return (
     <div>
       <div>#{currentQuestionNumber}</div>
@@ -44,10 +71,16 @@ export const QuestionBlock = ({
         <Blanks answerInput={answerInput} />
       </div>
       <div>
-        <Keys handleCharBtnClick={handleCharBtnClick} />
+        <Keys
+          handleCharBtnClick={handleCharBtnClick}
+          handleBackSpaceBtnClick={handleBackSpaceBtnClick}
+        />
       </div>
       <div>
-        <SubmitButton onClick={handleSubmitButtonClick} />
+        <SubmitButton
+          onClick={handleSubmitButtonClick}
+          isSubmitEnabled={isSubmitEnabled}
+        />
       </div>
     </div>
   );
