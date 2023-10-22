@@ -1,3 +1,4 @@
+import { scrambleString } from "@/utils/scrambleString";
 import { useEffect, useState } from "react";
 import { Blanks } from "./Blanks/index";
 import { Keys } from "./Keys/index";
@@ -47,6 +48,13 @@ export const QuestionBlock = ({
   );
 
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [scrambledAnswer, setScrambledAnswer] = useState("");
+
+  useEffect(() => {
+    setScrambledAnswer(scrambleString(questionData?.answer?.toUpperCase()));
+    const answerLength = questionData?.answer?.length;
+    setAnswerInput(new Array(answerLength).fill("-"));
+  }, [questionData?.answer]);
 
   useEffect(() => {
     setIsSubmitEnabled(false);
@@ -74,6 +82,7 @@ export const QuestionBlock = ({
         <Keys
           handleCharBtnClick={handleCharBtnClick}
           handleBackSpaceBtnClick={handleBackSpaceBtnClick}
+          scrambledAnswer={scrambledAnswer}
         />
       </div>
       <div>

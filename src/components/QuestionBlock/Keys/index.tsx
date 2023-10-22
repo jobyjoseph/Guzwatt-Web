@@ -3,35 +3,29 @@ import { KeyButton } from "@/components/library/KeyButton/index";
 type KeysProps = {
   handleCharBtnClick: any;
   handleBackSpaceBtnClick: any;
+  scrambledAnswer: string;
 };
 
 export const Keys = ({
   handleCharBtnClick,
   handleBackSpaceBtnClick,
+  scrambledAnswer,
 }: KeysProps) => {
   return (
     <div>
-      <KeyButton
-        onClick={() => {
-          handleCharBtnClick("O");
-        }}
-      >
-        O
-      </KeyButton>
-      <KeyButton
-        onClick={() => {
-          handleCharBtnClick("G");
-        }}
-      >
-        G
-      </KeyButton>
-      <KeyButton
-        onClick={() => {
-          handleCharBtnClick("D");
-        }}
-      >
-        D
-      </KeyButton>
+      {scrambledAnswer?.split("")?.map((char, index) => {
+        return (
+          <KeyButton
+            onClick={() => {
+              handleCharBtnClick(char);
+            }}
+            key={index}
+          >
+            {char}
+          </KeyButton>
+        );
+      })}
+
       <KeyButton
         onClick={() => {
           handleBackSpaceBtnClick();
