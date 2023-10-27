@@ -15,3 +15,82 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.inputBoxWrapper {
+  text-align: center;
+  margin-top: 60px;
+
+  .wordWrapper {
+    display: flex;
+    justify-content: center;
+
+    .inputBox {
+      display: flex;
+      border: 5px solid #ccc;
+      width: 84px;
+      height: 84px;
+      margin: 15px;
+      border-radius: 10px;
+      font-size: 64px;
+      line-height: 84px;
+      font-weight: bold;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.keysWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  .key {
+    width: 84px;
+    height: 84px;
+    line-height: 84px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    background: #f6b129;
+    border: 5px solid #f5d584;
+    box-shadow: 0 5px 0 #dc9728;
+    border-radius: 10px;
+    font-size: 48px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:active {
+      box-shadow: 0 1px 0 #dc9728;
+    }
+
+    &.backspace {
+      font-size: 36px;
+    }
+  }
+}
+
+.submitButtonWrapper {
+  text-align: center;
+  margin: 50px;
+
+  button {
+    box-sizing: border-box;
+    height: 90px;
+    font-size: 48px;
+    color: #ffffff;
+    line-height: 48px;
+    padding: 10px 40px;
+    background: #00a5f5;
+    font-family: "Poppins";
+    font-weight: bold;
+    border: 5px solid #36c7f7;
+    border-radius: 10px;
+    box-shadow: 0 5px 0 #0690d1;
+    cursor: pointer;
+
+    &:active {
+      box-shadow: 0 1px 0 #0690d1;
+    }
+  }
+}
