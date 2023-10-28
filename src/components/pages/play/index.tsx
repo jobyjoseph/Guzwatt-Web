@@ -2,6 +2,28 @@ import { RootLayout } from "@/components/layouts/layout";
 import { useState } from "react";
 import styles from "./style.module.scss";
 
+const LetterButton = ({
+  letter,
+  handleKeyClick,
+}: {
+  letter: string;
+  handleKeyClick: any;
+}) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+  return (
+    <button
+      className={styles?.key}
+      disabled={isDisabled}
+      onClick={() => {
+        setIsDisabled(true);
+        handleKeyClick(letter);
+      }}
+    >
+      {letter}
+    </button>
+  );
+};
+
 export function PlayPage() {
   const [inputArr, setInputArray] = useState<string[]>([]);
   const questionItem = {
@@ -46,13 +68,11 @@ export function PlayPage() {
       <div className={styles?.keysWrapper}>
         {currentQuestion?.scrambledAnswer?.split("")?.map((item, index) => {
           return (
-            <button
-              className={styles?.key}
-              key={`btn${index}`}
-              onClick={() => handleKeyClick(item)}
-            >
-              {item}
-            </button>
+            <LetterButton
+              letter={item}
+              key={index}
+              handleKeyClick={handleKeyClick}
+            />
           );
         })}
 

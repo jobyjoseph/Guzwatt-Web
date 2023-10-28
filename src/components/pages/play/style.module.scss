@@ -64,6 +64,12 @@
       box-shadow: 0 1px 0 #dc9728;
     }
 
+    &:disabled {
+      background: #ccc;
+      border: 5px solid #eee;
+      box-shadow: 0 5px 0 #aaa;
+    }
+
     &.backspace {
       font-size: 36px;
     }
