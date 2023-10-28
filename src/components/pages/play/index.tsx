@@ -1,5 +1,6 @@
 import { RootLayout } from "@/components/layouts/layout";
 import { useState } from "react";
+import confetti from "canvas-confetti";
 import styles from "./style.module.scss";
 
 const LetterButton = ({
@@ -30,7 +31,24 @@ export function PlayPage() {
     question:
       "A feeling of expectation and desire for a certain thing to happen",
     answer: "HOPE",
-    scrambledAnswer: "EOHP",
+    scrambledAnswer: [
+      {
+        btnId: 1,
+        letter: "E",
+      },
+      {
+        btnId: 2,
+        letter: "H",
+      },
+      {
+        btnId: 3,
+        letter: "O",
+      },
+      {
+        btnId: 1,
+        letter: "E",
+      },
+    ],
   };
   const [currentQuestion, setCurrentQuestion] = useState(questionItem);
 
@@ -41,6 +59,20 @@ export function PlayPage() {
     }
     console.log(arr);
 
+    setInputArray(arr);
+  };
+
+  const showConfetti = () => {
+    confetti();
+  };
+
+  const handleBackspaceClick = () => {
+    const arr = [...inputArr];
+
+    if (arr.length <= 0) {
+      return;
+    }
+    arr.length = arr.length - 1;
     setInputArray(arr);
   };
 
@@ -66,10 +98,10 @@ export function PlayPage() {
         </span>
       </div>
       <div className={styles?.keysWrapper}>
-        {currentQuestion?.scrambledAnswer?.split("")?.map((item, index) => {
+        {currentQuestion?.scrambledAnswer?.map((item, index) => {
           return (
             <LetterButton
-              letter={item}
+              letter={item?.letter}
               key={index}
               handleKeyClick={handleKeyClick}
             />
@@ -79,12 +111,13 @@ export function PlayPage() {
         <button
           className={`${styles?.key} ${styles?.backspace}`}
           key="backspace"
+          onClick={handleBackspaceClick}
         >
           &#9003;
         </button>
       </div>
       <div className={styles?.submitButtonWrapper}>
-        <button>SUBMIT</button>
+        <button onClick={showConfetti}>SUBMIT</button>
       </div>
     </RootLayout>
   );
