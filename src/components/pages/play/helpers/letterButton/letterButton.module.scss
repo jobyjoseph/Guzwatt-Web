@@ -1,0 +1,30 @@
+.key {
+  width: 84px;
+  height: 84px;
+  line-height: 84px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  background: #f6b129;
+  border: 5px solid #f5d584;
+  box-shadow: 0 5px 0 #dc9728;
+  border-radius: 10px;
+  font-size: 48px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: 0 1px 0 #dc9728;
+  }
+
+  &:disabled {
+    background: #ccc;
+    border: 5px solid #eee;
+    box-shadow: 0 5px 0 #aaa;
+  }
+
+  &.backspace {
+    font-size: 36px;
+  }
+}

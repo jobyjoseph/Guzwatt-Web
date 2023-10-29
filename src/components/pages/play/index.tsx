@@ -2,68 +2,60 @@ import { RootLayout } from "@/components/layouts/layout";
 import { useState } from "react";
 import confetti from "canvas-confetti";
 import styles from "./style.module.scss";
-
-const LetterButton = ({
-  letter,
-  handleKeyClick,
-}: {
-  letter: string;
-  handleKeyClick: any;
-}) => {
-  const [isDisabled, setIsDisabled] = useState(false);
-  return (
-    <button
-      className={styles?.key}
-      disabled={isDisabled}
-      onClick={() => {
-        setIsDisabled(true);
-        handleKeyClick(letter);
-      }}
-    >
-      {letter}
-    </button>
-  );
-};
+import { LetterButton } from "./helpers/letterButton";
+import { BackSpaceButton } from "./helpers/backSpaceButton";
+import { InputBox } from "./helpers/inputBox/index";
 
 export function PlayPage() {
-  const [inputArr, setInputArray] = useState<string[]>([]);
+  const [inputArr, setInputArray] = useState<any[]>([]);
+  const [answerStatus, setAnswerStatus] = useState("");
   const questionItem = {
     question:
       "A feeling of expectation and desire for a certain thing to happen",
     answer: "HOPE",
     scrambledAnswer: [
       {
-        btnId: 1,
+        letterId: 1,
         letter: "E",
       },
       {
-        btnId: 2,
+        letterId: 2,
         letter: "H",
       },
       {
-        btnId: 3,
+        letterId: 3,
         letter: "O",
       },
       {
-        btnId: 1,
-        letter: "E",
+        letterId: 4,
+        letter: "P",
       },
     ],
   };
   const [currentQuestion, setCurrentQuestion] = useState(questionItem);
 
-  const handleKeyClick = (letter: string) => {
-    const arr = [...inputArr, letter];
+  const handleKeyClick = (letterObj: any) => {
+    setAnswerStatus("");
+
+    const arr = [...inputArr, letterObj];
     if (arr.length >= currentQuestion?.answer?.length) {
       arr.length = currentQuestion?.answer?.length;
     }
-    console.log(arr);
 
     setInputArray(arr);
   };
 
-  const showConfetti = () => {
-    confetti();
+  const handleSubmit = () => {
+    let inputAnswer = "";
+    for (let i = 0; i < inputArr?.length; i++) {
+      inputAnswer = inputAnswer + inputArr?.[i]?.letter;
+    }
+    if (inputAnswer === questionItem?.answer) {
+      setAnswerStatus("correct");
+      confetti();
+    } else {
+      setAnswerStatus("wrong");
+    }
   };
 
   const handleBackspaceClick = () => {
@@ -86,12 +78,12 @@ export function PlayPage() {
         <span className={styles?.wordWrapper}>
           {currentQuestion?.answer?.split("")?.map((item, index) => {
             if (!inputArr?.[index]) {
-              return <span key={index} className={styles?.inputBox}></span>;
+              return <InputBox key={index}></InputBox>;
             } else {
               return (
-                <span key={index} className={styles?.inputBox}>
-                  {inputArr?.[index]}
-                </span>
+                <InputBox key={index} answerStatus={answerStatus}>
+                  {inputArr?.[index]?.letter}
+                </InputBox>
               );
             }
           })}
@@ -99,25 +91,34 @@ export function PlayPage() {
       </div>
       <div className={styles?.keysWrapper}>
         {currentQuestion?.scrambledAnswer?.map((item, index) => {
+          let isDisabled = false;
+          inputArr?.forEach((inputItem) => {
+            if (inputItem?.letterId === item?.letterId) {
+              isDisabled = true;
+            }
+          });
           return (
             <LetterButton
-              letter={item?.letter}
+              value={item?.letter}
+              id={item?.letterId}
               key={index}
               handleKeyClick={handleKeyClick}
-            />
+              isDisabled={isDisabled}
+            >
+              {item?.letter}
+            </LetterButton>
           );
         })}
 
-        <button
-          className={`${styles?.key} ${styles?.backspace}`}
-          key="backspace"
-          onClick={handleBackspaceClick}
-        >
-          &#9003;
-        </button>
+        <BackSpaceButton handleKeyClick={handleBackspaceClick} />
       </div>
       <div className={styles?.submitButtonWrapper}>
-        <button onClick={showConfetti}>SUBMIT</button>
+        <button
+          onClick={handleSubmit}
+          disabled={questionItem?.scrambledAnswer?.length !== inputArr?.length}
+        >
+          SUBMIT
+        </button>
       </div>
     </RootLayout>
   );
