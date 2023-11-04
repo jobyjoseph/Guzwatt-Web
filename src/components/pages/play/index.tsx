@@ -93,17 +93,19 @@ export function PlayPage({ gameQuestions }: { gameQuestions: any }) {
           <div className={styles?.question}>{currentQuestion?.question}</div>
           <div className={styles?.inputBoxWrapper}>
             <span className={styles?.wordWrapper}>
-              {currentQuestion?.answer?.split("")?.map((item, index) => {
-                if (!inputArr?.[index]) {
-                  return <InputBox key={index}></InputBox>;
-                } else {
-                  return (
-                    <InputBox key={index} answerStatus={answerStatus}>
-                      {inputArr?.[index]?.letter}
-                    </InputBox>
-                  );
-                }
-              })}
+              {currentQuestion?.answer
+                ?.split("")
+                ?.map((item: any, index: number) => {
+                  if (!inputArr?.[index]) {
+                    return <InputBox key={index}></InputBox>;
+                  } else {
+                    return (
+                      <InputBox key={index} answerStatus={answerStatus}>
+                        {inputArr?.[index]?.letter}
+                      </InputBox>
+                    );
+                  }
+                })}
             </span>
           </div>
         </>
@@ -115,7 +117,7 @@ export function PlayPage({ gameQuestions }: { gameQuestions: any }) {
       )}
       {showKeySection && (
         <div className={styles?.keysWrapper}>
-          {currentQuestion?.scrambledAnswer?.map((item, index) => {
+          {currentQuestion?.scrambledAnswer?.map((item: any, index: number) => {
             let isDisabled = false;
             inputArr?.forEach((inputItem) => {
               if (inputItem?.letterId === item?.letterId) {

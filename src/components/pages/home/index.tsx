@@ -1,7 +1,7 @@
 import { RootLayout } from "@/components/layouts/layout";
 import styles from "./style.module.scss";
 
-export function HomePage({ gameQuestions }: { gameQuestions: any }) {
+export function HomePage() {
   const handlePlay = () => {
     window.location.href = "/play";
   };

@@ -8,7 +8,7 @@ export const InputBox = ({
   answerStatus?: string;
 }) => {
   return (
-    <span className={`${styles?.inputBox} ${styles?.[answerStatus]}`}>
+    <span className={`${styles?.inputBox} ${styles?.[answerStatus || ""]}`}>
       {children}
     </span>
   );
