@@ -19,10 +19,12 @@
 .inputBoxWrapper {
   text-align: center;
   margin-top: 60px;
+  flex-wrap: wrap;
 
   .wordWrapper {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
 }
 
@@ -30,6 +32,7 @@
   display: flex;
   justify-content: center;
   margin-top: 60px;
+  flex-wrap: wrap;
 }
 
 .submitButtonWrapper {
@@ -60,5 +63,18 @@
       border: 5px solid #eee;
       box-shadow: 0 5px 0 #aaa;
     }
+  }
+}
+
+.scoreWrapper {
+  text-align: center;
+
+  h1 {
+    font-size: 48px;
+  }
+
+  .score {
+    font-size: 200px;
+    font-weight: bold;
   }
 }

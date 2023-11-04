@@ -5,7 +5,7 @@ export const InputBox = ({
   answerStatus,
 }: {
   children?: any;
-  answerStatus: string;
+  answerStatus?: string;
 }) => {
   return (
     <span className={`${styles?.inputBox} ${styles?.[answerStatus]}`}>

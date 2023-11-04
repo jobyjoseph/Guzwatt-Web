@@ -6,33 +6,18 @@ import { LetterButton } from "./helpers/letterButton";
 import { BackSpaceButton } from "./helpers/backSpaceButton";
 import { InputBox } from "./helpers/inputBox/index";
 
-export function PlayPage() {
+export function PlayPage({ gameQuestions }: { gameQuestions: any }) {
   const [inputArr, setInputArray] = useState<any[]>([]);
+  const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
   const [answerStatus, setAnswerStatus] = useState("");
-  const questionItem = {
-    question:
-      "A feeling of expectation and desire for a certain thing to happen",
-    answer: "HOPE",
-    scrambledAnswer: [
-      {
-        letterId: 1,
-        letter: "E",
-      },
-      {
-        letterId: 2,
-        letter: "H",
-      },
-      {
-        letterId: 3,
-        letter: "O",
-      },
-      {
-        letterId: 4,
-        letter: "P",
-      },
-    ],
-  };
-  const [currentQuestion, setCurrentQuestion] = useState(questionItem);
+  const [showKeySection, setShowKeySection] = useState(true);
+  const [showSubmitButton, setShowSubmitButton] = useState(true);
+  const [showNextButton, setShowNextButton] = useState(false);
+  const [showViewScoreButton, setShowViewScoreButton] = useState(false);
+  const [showPlayAgainButton, setShowPlayAgainButton] = useState(false);
+  const [showScore, setShowScore] = useState(false);
+  const [currentQuestionNo, setCurrentQuestionNo] = useState(0);
+  const currentQuestion = gameQuestions[currentQuestionNo];
 
   const handleKeyClick = (letterObj: any) => {
     setAnswerStatus("");
@@ -41,21 +26,51 @@ export function PlayPage() {
     if (arr.length >= currentQuestion?.answer?.length) {
       arr.length = currentQuestion?.answer?.length;
     }
-
+    console.log(arr);
+    console.log(currentQuestion?.scrambledAnswer);
     setInputArray(arr);
   };
 
   const handleSubmit = () => {
+    setShowKeySection(false);
+    setShowSubmitButton(false);
     let inputAnswer = "";
     for (let i = 0; i < inputArr?.length; i++) {
       inputAnswer = inputAnswer + inputArr?.[i]?.letter;
     }
-    if (inputAnswer === questionItem?.answer) {
+    if (inputAnswer === currentQuestion?.answer) {
       setAnswerStatus("correct");
+      setCorrectAnswerCount(correctAnswerCount + 1);
       confetti();
     } else {
       setAnswerStatus("wrong");
     }
+
+    // Show score button if all questions done
+    if (currentQuestionNo === gameQuestions?.length - 1) {
+      setShowViewScoreButton(true);
+    } else {
+      setShowNextButton(true);
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentQuestionNo(currentQuestionNo + 1);
+    setAnswerStatus("");
+    setInputArray([]);
+    setShowKeySection(true);
+    setShowSubmitButton(true);
+    setShowNextButton(false);
+  };
+
+  const handleViewScore = () => {
+    setShowScore(true);
+    setShowPlayAgainButton(true);
+    setShowViewScoreButton(false);
+  };
+
+  const handlePlayAgain = () => {
+    window?.location?.reload();
   };
 
   const handleBackspaceClick = () => {
@@ -70,56 +85,86 @@ export function PlayPage() {
 
   return (
     <RootLayout>
-      <div>
-        <span className={styles?.slno}>#1</span>
-      </div>
-      <div className={styles?.question}>{currentQuestion?.question}</div>
-      <div className={styles?.inputBoxWrapper}>
-        <span className={styles?.wordWrapper}>
-          {currentQuestion?.answer?.split("")?.map((item, index) => {
-            if (!inputArr?.[index]) {
-              return <InputBox key={index}></InputBox>;
-            } else {
-              return (
-                <InputBox key={index} answerStatus={answerStatus}>
-                  {inputArr?.[index]?.letter}
-                </InputBox>
-              );
-            }
+      {!showScore ? (
+        <>
+          <div>
+            <span className={styles?.slno}>#{currentQuestionNo + 1}</span>
+          </div>
+          <div className={styles?.question}>{currentQuestion?.question}</div>
+          <div className={styles?.inputBoxWrapper}>
+            <span className={styles?.wordWrapper}>
+              {currentQuestion?.answer?.split("")?.map((item, index) => {
+                if (!inputArr?.[index]) {
+                  return <InputBox key={index}></InputBox>;
+                } else {
+                  return (
+                    <InputBox key={index} answerStatus={answerStatus}>
+                      {inputArr?.[index]?.letter}
+                    </InputBox>
+                  );
+                }
+              })}
+            </span>
+          </div>
+        </>
+      ) : (
+        <div className={styles?.scoreWrapper}>
+          <h1>Your Score</h1>
+          <div className={styles?.score}>{correctAnswerCount}</div>
+        </div>
+      )}
+      {showKeySection && (
+        <div className={styles?.keysWrapper}>
+          {currentQuestion?.scrambledAnswer?.map((item, index) => {
+            let isDisabled = false;
+            inputArr?.forEach((inputItem) => {
+              if (inputItem?.letterId === item?.letterId) {
+                isDisabled = true;
+              }
+            });
+            return (
+              <LetterButton
+                value={item?.letter}
+                id={item?.letterId}
+                key={index}
+                handleKeyClick={handleKeyClick}
+                isDisabled={isDisabled}
+              >
+                {item?.letter}
+              </LetterButton>
+            );
           })}
-        </span>
-      </div>
-      <div className={styles?.keysWrapper}>
-        {currentQuestion?.scrambledAnswer?.map((item, index) => {
-          let isDisabled = false;
-          inputArr?.forEach((inputItem) => {
-            if (inputItem?.letterId === item?.letterId) {
-              isDisabled = true;
-            }
-          });
-          return (
-            <LetterButton
-              value={item?.letter}
-              id={item?.letterId}
-              key={index}
-              handleKeyClick={handleKeyClick}
-              isDisabled={isDisabled}
-            >
-              {item?.letter}
-            </LetterButton>
-          );
-        })}
 
-        <BackSpaceButton handleKeyClick={handleBackspaceClick} />
-      </div>
-      <div className={styles?.submitButtonWrapper}>
-        <button
-          onClick={handleSubmit}
-          disabled={questionItem?.scrambledAnswer?.length !== inputArr?.length}
-        >
-          SUBMIT
-        </button>
-      </div>
+          <BackSpaceButton handleKeyClick={handleBackspaceClick} />
+        </div>
+      )}
+      {showSubmitButton && (
+        <div className={styles?.submitButtonWrapper}>
+          <button
+            onClick={handleSubmit}
+            disabled={
+              currentQuestion?.scrambledAnswer?.length !== inputArr?.length
+            }
+          >
+            SUBMIT
+          </button>
+        </div>
+      )}
+      {showNextButton && (
+        <div className={styles?.submitButtonWrapper}>
+          <button onClick={handleNext}>NEXT</button>
+        </div>
+      )}
+      {showViewScoreButton && (
+        <div className={styles?.submitButtonWrapper}>
+          <button onClick={handleViewScore}>VIEW SCORE</button>
+        </div>
+      )}
+      {showPlayAgainButton && (
+        <div className={styles?.submitButtonWrapper}>
+          <button onClick={handlePlayAgain}>PLAY AGAIN</button>
+        </div>
+      )}
     </RootLayout>
   );
 }
