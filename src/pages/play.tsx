@@ -9,7 +9,7 @@ export default function Play({ gameQuestions }: { gameQuestions: any }) {
 }
 
 export const getServerSideProps = async () => {
-  const questionIndices = getRandomIntegers(0, 10, 5);
+  const questionIndices = getRandomIntegers(0, 2, 2);
   const gameQuestions = getGameQuestions(words, questionIndices);
 
   for (let i = 0; i < gameQuestions?.length; i++) {

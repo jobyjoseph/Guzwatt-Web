@@ -88,7 +88,9 @@ export function PlayPage({ gameQuestions }: { gameQuestions: any }) {
       {!showScore ? (
         <>
           <div>
-            <span className={styles?.slno}>#{currentQuestionNo + 1}</span>
+            <span className={styles?.slno}>
+              {currentQuestionNo + 1} / {gameQuestions?.length}
+            </span>
           </div>
           <div className={styles?.question}>{currentQuestion?.question}</div>
           <div className={styles?.inputBoxWrapper}>
@@ -107,12 +109,30 @@ export function PlayPage({ gameQuestions }: { gameQuestions: any }) {
                   }
                 })}
             </span>
+
+            {answerStatus === "wrong" && (
+              <div>
+                <span className={styles?.wordWrapper}>
+                  {currentQuestion?.answer
+                    ?.split("")
+                    ?.map((item: any, index: number) => {
+                      return (
+                        <InputBox key={index} answerStatus="correct">
+                          {item}
+                        </InputBox>
+                      );
+                    })}
+                </span>
+              </div>
+            )}
           </div>
         </>
       ) : (
         <div className={styles?.scoreWrapper}>
           <h1>Your Score</h1>
-          <div className={styles?.score}>{correctAnswerCount}</div>
+          <div className={styles?.score}>
+            {correctAnswerCount} / {gameQuestions?.length}
+          </div>
         </div>
       )}
       {showKeySection && (
